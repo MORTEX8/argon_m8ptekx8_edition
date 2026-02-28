@@ -29,6 +29,7 @@ public final class ModuleManager implements ButtonListener {
 		add(new AimAssist());
 		add(new AnchorMacro());
 		add(new AutoCrystal());
+		add(new CrystalAura());
 		add(new AutoDoubleHand());
 		add(new AutoHitCrystal());
 		add(new AutoInventoryTotem());
@@ -41,6 +42,7 @@ public final class ModuleManager implements ButtonListener {
 		add(new HoverTotem());
 		add(new NoMissDelay());
 		add(new ShieldDisabler());
+		add(new Surround());
 		add(new TotemOffhand());
 		add(new AutoJumpReset());
 
@@ -53,14 +55,17 @@ public final class ModuleManager implements ButtonListener {
 		add(new AutoClicker());
 		add(new KeyPearl());
 		add(new NoBreakDelay());
+		add(new AutoMine());
 		add(new Freecam());
 		add(new PackSpoof());
 		add(new Sprint());
+		add(new SpeedMine());
 
 		//Render
 		add(new HUD());
 		add(new NoBounce());
 		add(new PlayerESP());
+		add(new Nametags());
 		add(new StorageEsp());
 		add(new TargetHud());
 

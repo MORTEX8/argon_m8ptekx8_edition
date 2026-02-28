@@ -2,6 +2,7 @@ package dev.lvstrng.argon.mixin;
 
 import dev.lvstrng.argon.Argon;
 import dev.lvstrng.argon.module.modules.misc.NoBreakDelay;
+import dev.lvstrng.argon.module.modules.misc.SpeedMine;
 import net.minecraft.client.network.ClientPlayerInteractionManager;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
@@ -18,6 +19,7 @@ public class ClientPlayerInteractionManagerMixin {
 			at = @At(value = "FIELD", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;blockBreakingCooldown:I", opcode = Opcodes.GETFIELD, ordinal = 0))
 	public int updateBlockBreakingProgress(ClientPlayerInteractionManager clientPlayerInteractionManager) {
 		int cooldown = this.blockBreakingCooldown;
-		return Argon.INSTANCE.getModuleManager().getModule(NoBreakDelay.class).isEnabled() ? 0 : cooldown;
+		return (Argon.INSTANCE.getModuleManager().getModule(NoBreakDelay.class).isEnabled()
+				|| Argon.INSTANCE.getModuleManager().getModule(SpeedMine.class).isEnabled()) ? 0 : cooldown;
 	}
 }

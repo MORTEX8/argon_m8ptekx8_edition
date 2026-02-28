@@ -75,6 +75,43 @@ public final class RotationUtils {
 		return new Rotation(MathHelper.wrapDegrees(Math.toDegrees(Math.atan2(dz, dx)) - 90.0), -MathHelper.wrapDegrees(Math.toDegrees(Math.atan2(dy, dist))));
 	}
 
+	/** Yaw and pitch to look from src to dest. Returns float[0]=yaw, float[1]=pitch. */
+	public static float[] getRotationsTo(Vec3d src, Vec3d dest) {
+		Vec3d diff = dest.subtract(src);
+		float yaw = (float) (Math.toDegrees(Math.atan2(diff.z, diff.x)) - 90);
+		float pitch = (float) Math.toDegrees(-Math.atan2(diff.y, Math.hypot(diff.x, diff.z)));
+		return new float[] { MathHelper.wrapDegrees(yaw), MathHelper.wrapDegrees(pitch) };
+	}
+
+	/** Smooth step from previous toward target. rotationSpeed 0=slow, 100=fast. */
+	public static float[] smooth(float[] target, float[] previous, float rotationSpeed) {
+		float speed = (1.0f - MathHelper.clamp(rotationSpeed / 100.0f, 0.1f, 0.9f)) * 10.0f;
+		float[] out = new float[2];
+		out[0] = previous[0] + (float) (-getAngleDifference(previous[0], target[0]) / speed);
+		out[1] = previous[1] + (-(previous[1] - target[1]) / speed);
+		out[1] = MathHelper.clamp(out[1], -90.0f, 90.0f);
+		return out;
+	}
+
+	public static double getAngleDifference(float client, float yaw) {
+		return ((client - yaw) % 360.0 + 540.0) % 360.0 - 180.0;
+	}
+
+	public static double getAnglePitchDifference(float client, float pitch) {
+		return ((client - pitch) % 180.0 + 270.0) % 180.0 - 90.0;
+	}
+
+	/** Forward vector from yaw/pitch in degrees. */
+	public static Vec3d getRotationVector(float pitch, float yaw) {
+		float f = pitch * ((float) Math.PI / 180.0f);
+		float g = -yaw * ((float) Math.PI / 180.0f);
+		float h = MathHelper.cos(g);
+		float i = MathHelper.sin(g);
+		float j = MathHelper.cos(f);
+		float k = MathHelper.sin(f);
+		return new Vec3d(i * j, -k, h * j);
+	}
+
 	public static double getAngleToRotation(Rotation rotation) {
 		double currentYaw = MathHelper.wrapDegrees(mc.player.getYaw());
 		double currentPitch = MathHelper.wrapDegrees(mc.player.getPitch());

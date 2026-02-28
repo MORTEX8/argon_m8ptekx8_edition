@@ -40,4 +40,13 @@ public final class FriendManager {
 
         return false;
     }
+
+    public Set<String> getFriends() {
+        return new HashSet<>(friends);
+    }
+
+    public void setFriends(Set<String> friends) {
+        this.friends.clear();
+        if (friends != null) this.friends.addAll(friends);
+    }
 }
